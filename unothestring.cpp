@@ -123,7 +123,7 @@ public:
 		return max(substrLen, maxSubstrLen);
 	}
 
-	// 22. Generate Parentheses
+	// 22. Generate Parentheses (backtracking)
 	void gps(vector<string> &pss, string ps, int left_ps, int right_ps)
 	{
 		if (!left_ps && !right_ps)
@@ -166,7 +166,7 @@ int main()
 	// cout << "String: " << s << endl;
 	// cout << "Length of longest substring: " << solu.lengthOfLongestSubstring(s) << endl << endl;
 
-	// 22. Generate Parentheses
+	// 22. Generate Parentheses (backtracking)
 	while (1)
 	{
 		int n = -1;
