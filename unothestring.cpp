@@ -20,6 +20,17 @@ using namespace std;
                                   cin>>dock;    \
 }while(0)
 
+template<typename T>
+void printContainer(vector<T> &container)
+{
+	for (auto it = container.begin(); it != container.end(); ++it)
+	{
+		cout << *it;
+		if (it != container.end() - 1)
+			cout << ", ";
+	}
+}
+
 class Solution
 {
 public:
@@ -111,7 +122,34 @@ public:
 
 		return max(substrLen, maxSubstrLen);
 	}
+
+	// 22. Generate Parentheses
+	void gps(vector<string> &pss, string ps, int left_ps, int right_ps)
+	{
+		if (!left_ps && !right_ps)
+		{
+			pss.push_back(ps);
+			return;
+		}
+
+		if (left_ps > 0)
+			gps(pss, ps + "(", left_ps - 1, right_ps);
+
+		if (right_ps > left_ps)
+			gps(pss, ps + ")", left_ps, right_ps - 1);
+	}
+
+	vector<string> generateParenthesis(int n)
+	{
+		vector<string> parentheses;
+
+		gps(parentheses, "", n, n);
+
+		return parentheses;
+    }
 };
+
+
 
 int main()
 {
@@ -121,13 +159,27 @@ int main()
 	// string s = "A man, a plan, a canal: Panama";
 	// cout << "String: " << s << endl;
 	// cout << "Is palindrome: " << (solu.isPalindrome(s) ? "true" : "false") << endl << endl;
+	// string s = "abcabcbb";
+	// s = " ";
+	// s = "bbbbb";
+	// s = "pwwkew";
+	// cout << "String: " << s << endl;
+	// cout << "Length of longest substring: " << solu.lengthOfLongestSubstring(s) << endl << endl;
 
-	string s = "abcabcbb";
-	s = " ";
-	s = "bbbbb";
-	s = "pwwkew";
-	cout << "String: " << s << endl;
-	cout << "Length of longest substring: " << solu.lengthOfLongestSubstring(s) << endl << endl;
+	// 22. Generate Parentheses
+	while (1)
+	{
+		int n = -1;
+		while (n <= 0)
+		{
+			cout << "Number of pairs of parentheses: ";
+			cin >> n;
+		} 
+		vector<string> parentheses = solu.generateParenthesis(n);
+		cout << "Number of combinations of well-formed parentheses: " << parentheses.size() << endl;
+		printContainer(parentheses);
+		cout << endl << endl;
+	}
 
 	DOCK();
 
