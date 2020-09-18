@@ -147,9 +147,28 @@ public:
 
 		return parentheses;
     }
+
+	// 28. Implement strStr()
+	int strStr(string haystack, string needle)
+	{
+        if (needle.empty())
+			return 0;
+
+		for (int i = 0; i < haystack.length(); ++i)
+		{
+			if (haystack[i] == needle[0])
+			{
+				int j = i + 1;
+				int k = 1;
+				for (; j < haystack.length() && k < needle.length() && haystack[j] == needle[k]; ++j, ++k);
+				if (k == needle.length())
+					return i;
+			}
+		}
+
+		return -1;
+    }
 };
-
-
 
 int main()
 {
@@ -167,18 +186,34 @@ int main()
 	// cout << "Length of longest substring: " << solu.lengthOfLongestSubstring(s) << endl << endl;
 
 	// 22. Generate Parentheses (backtracking)
+	// while (1)
+	// {
+	// 	int n = -1;
+	// 	while (n <= 0)
+	// 	{
+	// 		cout << "Number of pairs of parentheses: ";
+	// 		cin >> n;
+	// 	} 
+	// 	vector<string> parentheses = solu.generateParenthesis(n);
+	// 	cout << "Number of combinations of well-formed parentheses: "
+	// 		<< parentheses.size() << endl;
+	// 	printContainer(parentheses);
+	// 	cout << endl << endl;
+	// }
+
+	// 28. Implement strStr()
 	while (1)
 	{
-		int n = -1;
-		while (n <= 0)
-		{
-			cout << "Number of pairs of parentheses: ";
-			cin >> n;
-		} 
-		vector<string> parentheses = solu.generateParenthesis(n);
-		cout << "Number of combinations of well-formed parentheses: " << parentheses.size() << endl;
-		printContainer(parentheses);
-		cout << endl << endl;
+		string haystack;
+		string needle;
+
+		cout << "haystack: ";
+		cin >> haystack;
+		cout << "needle: ";
+		cin >> needle;
+
+		cout << "The index of first occurrence of needle in haystack: "
+			<< solu.strStr(haystack, needle) << endl << endl;
 	}
 
 	DOCK();
