@@ -149,24 +149,132 @@ public:
     }
 
 	// 28. Implement strStr()
-	int strStr(string haystack, string needle)
-	{
-        if (needle.empty())
-			return 0;
+	// int strStr(string haystack, string needle)
+	// {
+    //     if (needle.empty())
+	// 		return 0;
 
-		for (int i = 0; i < haystack.length(); ++i)
+	// 	for (int i = 0; i < haystack.length(); ++i)
+	// 	{
+	// 		if (haystack[i] == needle[0])
+	// 		{
+	// 			int j = i + 1;
+	// 			int k = 1;
+	// 			for (; j < haystack.length() && k < needle.length() && haystack[j] == needle[k]; ++j, ++k);
+	// 			if (k == needle.length())
+	// 				return i;
+	// 		}
+	// 	}
+
+	// 	return -1;
+    // }
+
+	vector<int> pt;
+	void createPrefixTable(string &needle)
+	{
+		pt.clear();
+		pt.push_back(-1);
+		int num_comm = 0;
+
+		for (int i = 1; i < needle.length(); i++)
 		{
-			if (haystack[i] == needle[0])
+			pt.push_back(num_comm);
+			if (needle[i] == needle[num_comm])
+				num_comm++;
+			else
 			{
-				int j = i + 1;
-				int k = 1;
-				for (; j < haystack.length() && k < needle.length() && haystack[j] == needle[k]; ++j, ++k);
-				if (k == needle.length())
-					return i;
+				while (num_comm)
+				{
+					num_comm = pt[num_comm];
+					if (needle[i] == needle[num_comm])
+					{
+						num_comm++;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	int KMP(string &s, string &ss)
+	{
+		int i = 0;
+		int j = 0;
+
+		while (i < s.length() && s.length() - i >= ss.length() - j)
+		{
+			if (s[i] == ss[j])
+			{
+				++i;
+				++j;
+				if (j == ss.length())
+					return i - j;
+			}
+			else
+			{
+				j = pt[j];
+				if (j == -1)
+				{
+					++i;
+					++j;
+				}
 			}
 		}
 
 		return -1;
+	}
+
+	int strStr(string haystack, string needle)
+	{
+		if (needle.empty())
+			return 0;
+
+		if (needle.length() > haystack.length())
+			return -1;
+
+		createPrefixTable(needle);
+
+		return KMP(haystack, needle);
+	}
+
+	// 15. 3Sum
+	vector<vector<int>> threeSum(vector<int>& nums)
+	{
+		vector<vector<int>> triplets;
+		int n = nums.size();
+
+		if (!n)
+			return triplets;
+
+		sort(nums.begin(), nums.end());
+
+		for (int i = 0; i < n - 2; i++)
+		{
+			if (i != 0 && nums[i] == nums[i-1])
+				continue;
+
+			int target = -nums[i];
+			int l = i + 1;
+			int h = n - 1;
+
+			while(l < h)
+			{
+				int sum = nums[l] + nums[h];
+
+				if (sum == target)
+				{
+					triplets.push_back({nums[i], nums[l], nums[h]});
+					while(l < h && nums[++l] == nums[l-1]);
+					while(l < h && nums[--h] == nums[h+1]);
+				}
+				else if (sum < target)
+					while(l < h && nums[++l] == nums[l-1]);
+				else
+					while(l < h && nums[--h] == nums[h+1]);
+			}
+		}
+	
+		return triplets;
     }
 };
 
@@ -215,6 +323,19 @@ int main()
 		cout << "The index of first occurrence of needle in haystack: "
 			<< solu.strStr(haystack, needle) << endl << endl;
 	}
+
+	// 15. 3Sum
+	// vector<int> nums = {-1,0,1,2,-1,-4};
+	// cout << "nums: ";
+	// printContainer(nums);
+	// cout << endl;
+	// vector<vector<int>> triplets = solu.threeSum(nums);
+	// cout << "triplets:" << endl;
+	// for (auto triplet : triplets)
+	// {
+	// 	printContainer(triplet);
+	// 	cout << endl; 
+	// }
 
 	DOCK();
 
